@@ -2,11 +2,11 @@
 
 /* passos
 - selecciono os elementos HTML: input, botao  FEITO
-- recolho a info do que a usuaria escreve no input 
+- recolho a info do que a usuaria escreve no input FEITO
 - quando a usuaria fizer click no botao "buscar" - evento
-    - faço um fetch ao servidor
+    - faço um fetch ao servidor FEITO
     - Procuro ver se a info na minha API coincide com o que a usuaria escreveu com o metodo filter:
-        - se estiver, pinto na web as series que coinciden
+        - se estiver, pinto na web as series que coinciden FEITO
         - se nao, imagem placeholder ou NOT FOUND --> CONDICIONAL IF-ELSE
 
 */
