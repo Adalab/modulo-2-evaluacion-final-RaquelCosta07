@@ -6,6 +6,7 @@ const results = document.querySelector(".js-results");
 const cont = document.querySelector(".container");
 
 let animeList = [];
+let favoriteAnimeList = [];
 
 function handleSearch() {
   const inputValue = inputSearch.value;
@@ -29,7 +30,7 @@ function handleSearch() {
         }
 
         // Adiciona o HTML para cada anime
-        cont.innerHTML += `<div class="js-listOfAnime">
+        cont.innerHTML += `<div class="js-listOfAnime" id=${anime.mal_id}>
           <h5>${anime.title}</h5>
           <img src="${url}" alt="Imagem de ${anime.title}">
           </div>`;
@@ -42,10 +43,13 @@ function handleSearch() {
       for (const favoriteAnime of AllFavAnime) {
         favoriteAnime.addEventListener("click", handleAddFavorite);
       }
+      console.log(animes);
     });
 
   //localStorage.setItem("seriesInfo", JSON.stringify(data.series));
 }
+
+searchButton.addEventListener("click", handleSearch);
 
 /*
 3. Marcar series como preferidas
@@ -55,8 +59,18 @@ function handleSearch() {
 - pinto las series favoritas a la izquierda y nunca se borran
 */
 
-function handleAddFavorite() {
+function handleAddFavorite(event) {
   console.log("click en una serie");
-}
+  console.log(event.currentTarget.id);
+  const idSerieClicked = event.currentTarget.id;
 
-searchButton.addEventListener("click", handleSearch);
+  // procurar a serie clickada a partir do ID
+  const seriesSelected = animeList.find((serie) => {
+    return anime.mal_id === idSerieClicked;
+  });
+
+  console.log(seriesSelected);
+  // añadir esa serie a la lista de series favoritas
+
+  favoriteAnimeList.push(seriesSelected);
+}
