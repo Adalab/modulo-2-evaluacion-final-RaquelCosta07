@@ -15,7 +15,7 @@ function renderFavorites() {
 
   for (const favoriteAnime of favoriteAnimeList) {
     favoritesCont.innerHTML += `<div class="favorite-anime">
-      <h5>${favoriteAnime.title}</h5>
+      <h4>${favoriteAnime.title}</h4>
       <img src="${favoriteAnime.images.jpg.image_url}" alt="Imagem de ${favoriteAnime.title}">
     </div>`;
   }
@@ -77,7 +77,7 @@ function handleSearch() {
 
         // Adiciona o HTML para cada anime
         cont.innerHTML += `<div class="js-listOfAnime" id=${anime.mal_id}>
-          <h5>${anime.title}</h5>
+          <h4>${anime.title}</h4>
           <img src="${url}" alt="Imagen de ${anime.title}">
           </div>`;
       }

@@ -8,6 +8,8 @@ h1 {
 
 .searchDiv {
     justify-self: center;
+    margin: 10px;
+    font-family: monospace;
 }
 .input {
     border: 3px solid #219ebc;
