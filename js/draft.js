@@ -4,6 +4,7 @@ const inputSearch = document.querySelector(".js-input");
 const searchButton = document.querySelector(".js-button");
 const cont = document.querySelector(".js-container");
 const favoritesCont = document.querySelector(".js-favorites");
+const resetButton = document.querySelector(".js-reset-button");
 let animeList = [];
 let favoriteAnimeList = [];
 
@@ -92,10 +93,13 @@ function handleSearch() {
 
 searchButton.addEventListener("click", handleSearch);
 
-/*
-3. Marcar series como preferidas
-- Cuando la usuaria haga click en una serie,
-- tengo que saber qué serie ha clickado
-- voy a añadir esa serie a la lista de series favoritas a la izquierda
-- pinto las series favoritas a la izquierda y nunca se borran
-*/
+// Função para resetar o estado inicial
+function handleReset() {
+  inputSearch.value = ""; // Limpa o campo de busca
+  cont.innerHTML = ""; // Limpa os resultados de busca
+  favoritesCont.innerHTML = ""; // Limpa a lista de favoritos
+  animeList = []; // Reseta a lista de animes
+  favoriteAnimeList = []; // Reseta a lista de favoritos
+}
+
+resetButton.addEventListener("click", handleReset);

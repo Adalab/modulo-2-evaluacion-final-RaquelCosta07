@@ -17,7 +17,13 @@ button {
     border: 3px solid #023047;
     background-color: #219ebc;
     color: white;
-}
+    font-weight: bold;
+    padding: 3px;
+    }
+
+    button:hover {
+        background-color: #fb8500;
+    }
 
 .favorite {
     background-color: rgb(255, 183, 3, 0.5); /* Cor de fundo destacada */
