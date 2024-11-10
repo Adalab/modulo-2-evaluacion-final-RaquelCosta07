@@ -12,42 +12,101 @@
 */
 const inputSearch = document.querySelector(".js-input");
 const searchButton = document.querySelector(".js-button");
-const results = document.querySelector(".js-results");
-const cont = document.querySelector(".container");
+const cont = document.querySelector(".js-container");
+const favoritesCont = document.querySelector(".js-favorites");
+const resetButton = document.querySelector(".js-reset-button");
 let animeList = [];
+let favoriteAnimeList = [];
 
-const renderSeries = (series) => {
-  for (const serie of series) {
-    let urlImage = anime.images.jpg.image_url;
-    results.innerHTML += `<div class="listOfAnime">
-          <h5>${serie.title}</h5>
-          <img src="${urlImage}">
-          
-          </div>
-        `;
+// Cargar favoritos de localStorage al iniciar
+function loadFavoritesFromLocalStorage() {
+  const storedFavorites = localStorage.getItem("favoriteAnimeList");
+  if (storedFavorites) {
+    favoriteAnimeList = JSON.parse(storedFavorites);
+    renderFavorites();
   }
-  console.log(urlImage);
-};
+}
 
+loadFavoritesFromLocalStorage();
+
+// Renderizar lista de favoritos
+function renderFavorites() {
+  favoritesCont.innerHTML = "";
+  for (const favoriteAnime of favoriteAnimeList) {
+    favoritesCont.innerHTML += `<div class="favorite-anime">
+      <h4>${favoriteAnime.title}</h4>
+      <img src="${favoriteAnime.images.jpg.image_url}" alt="Imagem de ${favoriteAnime.title}">
+    </div>`;
+  }
+}
+
+// Manipular la adición de favoritos
+function handleAddFavorite(event) {
+  const idSerieClicked = event.currentTarget.id;
+  const seriesSelected = animeList.find(
+    (serie) => serie.mal_id === parseInt(idSerieClicked)
+  );
+  const isAlreadyFavorite = favoriteAnimeList.some(
+    (fav) => fav.mal_id === parseInt(idSerieClicked)
+  );
+
+  if (!isAlreadyFavorite) {
+    favoriteAnimeList.push(seriesSelected);
+
+    //guardar en local Storage
+    localStorage.setItem(
+      "favoriteAnimeList",
+      JSON.stringify(favoriteAnimeList)
+    );
+  }
+
+  event.currentTarget.classList.toggle("favorite");
+  renderFavorites();
+}
+
+// Función para manejar la búsqueda
 function handleSearch() {
   const inputValue = inputSearch.value;
 
   fetch(`https://api.jikan.moe/v4/anime?q=${inputValue}`)
     .then((response) => response.json())
     .then((data) => {
-      const animes = data.data;
+      animeList = data.data;
       cont.innerHTML = "";
 
-      for (const anime of animes) {
-        //console.log(anime);
-
-        const urlImage =
-          anime.images.jpg.image_url ===
+      for (const anime of animeList) {
+        let url = anime.images.jpg.image_url;
+        if (
+          url ===
           "https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png"
-            ? "https://via.placeholder.com/210x295/ffffff/666666/?text=not%20found"
-            : anime.images.jpg.image_url;
+        ) {
+          url =
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNNLEL-qmmLeFR1nxJuepFOgPYfnwHR56vcw&s";
+        }
+
+        cont.innerHTML += `<div class="js-listOfAnime" id=${anime.mal_id}>
+          <h4>${anime.title}</h4>
+          <img src="${url}" alt="Imagen de ${anime.title}">
+          </div>`;
+      }
+
+      const allFavAnime = document.querySelectorAll(".js-listOfAnime");
+      for (const animeFavEl of allFavAnime) {
+        animeFavEl.addEventListener("click", handleAddFavorite);
       }
     });
 }
 
 searchButton.addEventListener("click", handleSearch);
+
+// Función para resetear el estado inicial
+function handleReset() {
+  inputSearch.value = "";
+  cont.innerHTML = "";
+  favoritesCont.innerHTML = "";
+  animeList = [];
+  favoriteAnimeList = [];
+  localStorage.removeItem("favoriteAnimeList");
+}
+
+resetButton.addEventListener("click", handleReset);
